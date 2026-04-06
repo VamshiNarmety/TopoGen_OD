@@ -1,0 +1,12 @@
+{
+  "input_path": "src\\data\\data\\raw\\trip_data\\yellow\\yellow_tripdata_2023-01.parquet",
+  "output_parquet": "data\\processed\\od\\hourly_od_2023-01.parquet",
+  "output_csv": "data\\processed\\od\\hourly_od_2023-01.csv",
+  "rows": 1157364,
+  "unique_origins": 257,
+  "unique_destinations": 261,
+  "unique_od_pairs": 22754,
+  "trip_count_sum": 3066766,
+  "pickup_hour_min": "2008-12-31 23:00:00",
+  "pickup_hour_max": "2023-02-01 00:00:00"
+}
