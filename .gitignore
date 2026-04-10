@@ -1,0 +1,17 @@
+# Python virtual environment
+.venv/
+
+# Bytecode / caches
+__pycache__/
+*.pyc
+src/data/__pycache__/
+
+# Raw and generated local data
+data/raw/
+data/processed/network/
+data/processed/od/*_local.parquet
+data/processed/od/*_local.json
+
+# IDE
+.vscode/
+.idea/
