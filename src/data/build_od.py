@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 from pathlib import Path
 
@@ -17,6 +18,16 @@ def main() -> int:
     parser.add_argument("--input", required=True, help="Input parquet path")
     parser.add_argument("--output-dir", default="data/processed/od", help="Output directory")
     parser.add_argument("--prefix", default="hourly_od_2023-01", help="Output file prefix")
+    parser.add_argument(
+        "--start-date",
+        default="2023-01-01 00:00:00",
+        help="Inclusive start datetime in YYYY-MM-DD HH:MM:SS",
+    )
+    parser.add_argument(
+        "--end-date",
+        default="2023-01-31 23:59:59",
+        help="Inclusive end datetime in YYYY-MM-DD HH:MM:SS",
+    )
     parser.add_argument("--write-csv", action="store_true", help="Also write CSV")
     args = parser.parse_args()
 
@@ -42,6 +53,10 @@ def main() -> int:
     # Hourly bucket from pickup timestamp
     df["tpep_pickup_datetime"] = pd.to_datetime(df["tpep_pickup_datetime"], errors="coerce")
     df = df.dropna(subset=["tpep_pickup_datetime"]).copy()
+
+    start_dt = pd.Timestamp(dt.datetime.strptime(args.start_date, "%Y-%m-%d %H:%M:%S"))
+    end_dt = pd.Timestamp(dt.datetime.strptime(args.end_date, "%Y-%m-%d %H:%M:%S"))
+    df = df[(df["tpep_pickup_datetime"] >= start_dt) & (df["tpep_pickup_datetime"] <= end_dt)].copy()
     df["pickup_hour"] = df["tpep_pickup_datetime"].dt.floor("h")
 
     # Final OD columns
@@ -78,6 +93,8 @@ def main() -> int:
         "trip_count_sum": int(od["trip_count"].sum()) if len(od) else 0,
         "pickup_hour_min": str(od["pickup_hour"].min()) if len(od) else None,
         "pickup_hour_max": str(od["pickup_hour"].max()) if len(od) else None,
+        "start_date": args.start_date,
+        "end_date": args.end_date,
     }
 
     with open(summary_path, "w", encoding="utf-8") as f:
