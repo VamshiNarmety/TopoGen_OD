@@ -1,17 +1,40 @@
 # Python virtual environment
 .venv/
+venv/
 
 # Bytecode / caches
 __pycache__/
 *.pyc
-src/data/__pycache__/
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
 
-# Raw and generated local data
+# Data (all processed and raw)
 data/raw/
-data/processed/network/
-data/processed/od/*_local.parquet
-data/processed/od/*_local.json
+data/processed/
+*.csv
+*.parquet
+*.json
+
+# Report and output
+report/
+*.pdf
+*.tex~
+
+# Logs and temporary files
+*.log
+*.txt~
+*.tmp
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
